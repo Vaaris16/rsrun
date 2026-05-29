@@ -3,6 +3,15 @@ name = "rsrun"
 version = "0.1.0"
 edition = "2024"
 
+description = "An easy way to test rust projects"
+license = "MIT"
+repository = "https://github.com/Vaaris16/rsrun"
+readme = "README.md"
+keywords = ["rsrun"]
+categories = ["command-line-utilities"]
+
+
+
 [dependencies]
 colored = "3.1.1"
 figlet-rs = "1.0.0"
