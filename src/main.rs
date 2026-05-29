@@ -1,25 +1,32 @@
-use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Result, Watcher};
-use std::path::Path;
-use std::sync::mpsc::channel;
+use serde::Deserialize;
+
+mod on_change;
+mod startup;
+mod watch_dir;
+
+mod errors;
+
+use watch_dir::watch_dir::watch_directory;
 
 fn main() {
     if let Err(e) = watch_directory("./") {
-        print!("Error: {}", e);
+        print!("Errror: {}", e);
     }
 }
 
-fn watch_directory(path: &str) -> Result<()> {
-    let (tx, rx) = channel::<Result<Event>>();
+#[derive(Debug, Deserialize)]
+struct RsrunConfig {
+    commands: Commands,
+    ignore: Ignore,
+}
 
-    let mut watcher = RecommendedWatcher::new(tx, Config::default())?;
+#[derive(Debug, Deserialize)]
+struct Commands {
+    command: String,
+    args: String,
+}
 
-    watcher.watch(Path::new(path), RecursiveMode::Recursive)?;
-
-    println!("Watching: {path}");
-
-    for res in rx {
-        println!("change detected")
-    }
-
-    Ok(())
+#[derive(Debug, Deserialize)]
+struct Ignore {
+    item: String,
 }

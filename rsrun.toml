@@ -1,0 +1,6 @@
+[commands]
+command = "cargo"
+args = "run"
+
+[ignore]
+item = "/target/"
