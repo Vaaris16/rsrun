@@ -25,14 +25,20 @@ pub fn on_change() -> std::result::Result<(), AppErrors> {
     if let Some(ref mut prev) = *child {
         let _ = prev.kill();
     }
-    let mut new_child = Command::new(parsed_config.commands.command)
-        .arg(parsed_config.commands.args)
-        .spawn()
-        .expect("command failed");
 
-    new_child.wait().ok();
+    for cmd in parsed_config.commands {
+        let command = &cmd[0];
+        let args = &cmd[1..];
 
-    *child = Some(new_child);
+        let mut new_child = Command::new(command)
+            .args(args)
+            .spawn()
+            .expect("command failed");
+
+        new_child.wait().ok();
+
+        *child = Some(new_child);
+    }
 
     Ok(())
 }

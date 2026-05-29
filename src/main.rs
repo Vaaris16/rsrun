@@ -16,17 +16,6 @@ fn main() {
 
 #[derive(Debug, Deserialize)]
 struct RsrunConfig {
-    commands: Commands,
-    ignore: Ignore,
-}
-
-#[derive(Debug, Deserialize)]
-struct Commands {
-    command: String,
-    args: String,
-}
-
-#[derive(Debug, Deserialize)]
-struct Ignore {
-    item: String,
+    commands: Vec<Vec<String>>,
+    ignore: Vec<String>,
 }

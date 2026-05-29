@@ -1,6 +1,6 @@
-[commands]
-command = "cargo"
-args = "run"
+commands = [
+  ["cargo", "clean"],
+  ["cargo", "run"],
+]
 
-[ignore]
-item = "/target/"
+ignore = ["/target/", "src"]

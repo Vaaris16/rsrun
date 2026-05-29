@@ -1,4 +1,3 @@
-use crossterm::terminal;
 use notify::{Config, Event, RecommendedWatcher, RecursiveMode, Result, Watcher};
 use std::path::Path;
 use std::sync::mpsc::channel;
@@ -33,11 +32,12 @@ pub fn watch_directory(path: &str) -> Result<()> {
 
     for res in rx {
         if let Ok(event) = res {
-            if event
-                .paths
-                .iter()
-                .any(|p| p.to_string_lossy().contains(&config.ignore.item))
-            {
+            if event.paths.iter().any(|p| {
+                config
+                    .ignore
+                    .iter()
+                    .any(|ignore| p.to_string_lossy().contains(ignore))
+            }) {
                 continue;
             }
 
