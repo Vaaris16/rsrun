@@ -4,6 +4,8 @@ use std::{
     sync::Mutex,
 };
 
+use std::io::ErrorKind;
+
 use crate::errors::app_errors::AppErrors;
 use crate::on_change::read_config::read_config;
 
@@ -30,10 +32,12 @@ pub fn on_change() -> std::result::Result<(), AppErrors> {
         let command = &cmd[0];
         let args = &cmd[1..];
 
-        let mut new_child = Command::new(command)
-            .args(args)
-            .spawn()
-            .expect("command failed");
+        let mut new_child = Command::new(command).args(args).spawn().map_err(|e| {
+            if e.kind() == ErrorKind::NotFound {
+                return AppErrors::NotFoundCommand;
+            }
+            AppErrors::SpawnError
+        })?;
 
         new_child.wait().ok();
 

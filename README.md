@@ -24,7 +24,7 @@ touch rsrun.toml
 ### Configuration Example
 
 ```toml
-commands = [["cargo clean", "cargo run"]]
+commands = [["cargo", "clean"], ["cargo", "run"]]
 
 ignore = ["/target/"]
 
