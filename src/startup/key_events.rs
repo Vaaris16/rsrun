@@ -1,10 +1,13 @@
 use crate::on_change::on_change::on_change;
-use std::io::{self, BufRead};
+use std::io::{self};
 
 pub fn key_press() {
-    let stdin = io::stdin();
-    for line in stdin.lock().lines() {
-        match line.unwrap().trim().to_string().as_str() {
+    loop {
+        let mut input = String::new();
+
+        io::stdin().read_line(&mut input).unwrap();
+
+        match input.trim() {
             "r" => {
                 println!("\x1b[1;36mManual Reload...\x1b[0m");
                 if let Err(e) = on_change() {
